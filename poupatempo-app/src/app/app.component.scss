@@ -1,0 +1,38 @@
+main {
+    display: flex;
+    height: 100%;
+}
+
+.row {
+    display: flex;
+}
+
+#items {
+    width: 30%;
+}
+
+#categories {
+    width: 70%;
+    border:1px solid yellow;
+
+    >ul {
+        li {
+            display: flex;
+
+            .tags-chip-list {
+                width: 100%;
+            }
+        }
+    }
+
+}
+
+::ng-deep {
+    .category-bg {
+        background-color: gray!important;
+    }
+
+    .category-selected {
+        background-color: cornflowerblue!important;
+    }
+}
