@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 type debtType = 'monthy' | 'random'
+
 
 interface nubankModel {
   id: number;
   date: Date;
   description: string;
   value: number;
-  category?: item
+  category?: matchModel
+
 }
 
 interface matchModel extends item {
@@ -18,6 +20,7 @@ interface matchModel extends item {
 
 interface categoryModel extends item {
   tags: string[];
+  amount: number;
 }
 
 interface item {
@@ -37,6 +40,9 @@ const valueIndexNubankModel = 3;
 export class AppComponent {
   title = 'poupatempo-app';
 
+panelOpenState = false
+
+
   addOnBlurTags = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
@@ -48,14 +54,38 @@ export class AppComponent {
     {
       id: 1,
       name: 'Farmacia',
-      tags: ['drogaria', 'drogasil']
+      tags: ['drogaria', 'drogasil'],
+      amount:0
     },
     {
       id: 2,
       name: 'Eventos',
-      tags: ['Cinemarquise']
-    }
+      tags: ['Cinemarquise'],
+      amount:0
+
+    },
+    {
+      id: 3,
+      name: 'Uber',
+      tags: ['Uber'],
+      amount:0
+
+    },
+    {
+      id: 4,
+      name: '99',
+      tags: ['99'],
+      amount:0
+    },
+    {
+      id: 5,
+      name: 'Restaurante',
+      tags: ['restaurante', 'Grill'],
+      amount:0
+    }, 
   ]
+
+  matches: matchModel[] = [];
 
   records: nubankModel[] = [
     {
@@ -78,6 +108,13 @@ export class AppComponent {
       description: 'cccccc',
       value: 11.44,
       category: undefined
+    },
+    {
+      id: 3,
+      date: new Date(),
+      description: 'cccccc',
+      value: 11.44,
+      category: undefined
     }
 
   ];
@@ -88,20 +125,29 @@ export class AppComponent {
 
     await this.createRecordSet(e.target.files[0]);
 
-    let matches: matchModel[] = [];
-    this.eventualModel.forEach(e => e.tags.forEach(tag => matches.push({ id: e.id, name: e.name, tag: tag })));
+    this.compileMatches();
+ 
+    this.doMatches();
 
-    this.records.map(r => {
-      for (let i = 0; i < matches.length; i++) {
-        if (r.description.toLowerCase().indexOf(matches[i].tag.toLowerCase()) >= 0) {
-          this.eventualCalculation[matches[i].name] += r.value;
-          r.category = matches[i];
+    this.coumputeAmount();
+  }
+
+  compileMatches() {
+    this.matches = [];
+    this.eventualModel.forEach(e => e.tags.forEach(tag => this.matches.push({ id: e.id, name: e.name, tag: tag })));
+  }
+
+  doMatches() {
+    this.records
+    .map(m => { m.category = undefined; return m } )
+    .map(r => {
+      for (let i = 0; i < this.matches.length; i++) {
+        if (r.description.toLowerCase().indexOf(this.matches[i].tag.toLowerCase()) >= 0) {
+          r.category = this.matches[i];
           break;
         }
       }
-    })
-
-    console.log("records", this.records);
+    });
   }
 
   private async createRecordSet(file: File): Promise<void> {
@@ -130,47 +176,65 @@ export class AppComponent {
   }
 
   categoryChanged(eventual: categoryModel, record: nubankModel) {
-    record.category = eventual;
+    this.records.forEach(e => {
+      if (e.description == record.description && !e.category) {
+        e.category = { id: eventual.id, name: eventual.name, tag: record.description };
+      }
+    });
+
+    eventual.tags.push(record.description);
+
+    this.compileMatches();
+
+    this.coumputeAmount();
   }
 
-  addTag(category:categoryModel, event: MatChipInputEvent): void {
+  addTag(category: categoryModel, event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
       console.log("Add nova tag", event)
-      if(!category.tags.includes(value))
-      {
+      if (!category.tags.includes(value)) {
         category.tags.push(value);
       }
     }
+
+    this.compileMatches();
+
+    this.doMatches();
+
+    this.coumputeAmount();
+
     event.chipInput!.clear();
   }
 
-  removeTag(tag: string): void {
-    
-  }
+  removeTag(category:categoryModel, tag: string): void {
 
-  editTag(tag: string, event: MatChipEditedEvent) {
-    const value = event.value.trim();
-
-    // Remove fruit if it no longer has a name
-    if (!value) {
-      this.removeTag(tag);
-      return;
+    const index = category.tags.indexOf(tag, 0);
+    if (index > -1) {
+      category.tags.splice(index, 1);
     }
 
-    // // Edit existing fruit
-    // const index = this.fruits.indexOf(fruit);
-    // if (index >= 0) {
-    //   this.fruits[index].name = value;
-    // }
+    this.compileMatches();
+
+    this.doMatches();
+
+    this.coumputeAmount();
+  }
+
+  coumputeAmount() {
+    this.eventualModel.map(m => {
+      m.amount = this.records.filter(f => f.category?.id == m.id)
+                    .reduce((sum, current) => sum + current.value, 0);
+    });
+
   }
 
   newCategoryClicked() {
-    console.log(">>", this.newCategoryValue)
     this.eventualModel.push({
-        id: new Date().getMilliseconds(),
-        name:this.newCategoryValue,
-        tags: []
+      id: new Date().getMilliseconds(),
+      name: this.newCategoryValue,
+      tags: [],
+      amount: 0
     });
 
     this.newCategoryValue = '';

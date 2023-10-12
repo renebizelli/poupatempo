@@ -29,28 +29,51 @@
 
     <div id="categories">
 
-        <ul>
-            <li *ngFor="let category of eventualModel">
-                <h1>{{category.name}}</h1>
-                <mat-form-field class="tags-chip-list">
-                    <mat-chip-grid #chipGrid>
-                      <mat-chip-row *ngFor="let tag of category.tags"
-                                    (removed)="removeTag(tag)"
-                                    [editable]="true"
-                                    (edited)="editTag(tag, $event)">
-                        {{tag}}
-                        <button matChipRemove [attr.aria-label]="'remove ' + tag">
-                          <mat-icon>cancel</mat-icon>
-                        </button>
-                      </mat-chip-row>
-                      <input [matChipInputFor]="chipGrid"
-                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                             [matChipInputAddOnBlur]="addOnBlurTags"
-                             (matChipInputTokenEnd)="addTag(category, $event)"/>
-                    </mat-chip-grid>
-                  </mat-form-field>
-            </li>
+        <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Categorias
+                </mat-panel-title>
+                <mat-panel-description>
+                  Total
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                 (closed)="panelOpenState = false"
+                                 *ngFor="let category of eventualModel">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{category.name}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{category.amount}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              
+              <mat-form-field class="tags-chip-list">
+                <mat-chip-grid #chipGrid>
+                  <mat-chip-row *ngFor="let tag of category.tags"
+                                (removed)="removeTag(category, tag)"
+                                [editable]="false">
+                    {{tag}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                  <input [matChipInputFor]="chipGrid"
+                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                         [matChipInputAddOnBlur]="addOnBlurTags"
+                         (matChipInputTokenEnd)="addTag(category, $event)"/>
+                </mat-chip-grid>
+              </mat-form-field>
 
+            </mat-expansion-panel>
+
+          </mat-accordion>
+
+        <ul>
             <li>
                 <div class="category-new-row">
                     <input type="text" placeholder="nova categoria"  [(ngModel)]="newCategoryValue" />
