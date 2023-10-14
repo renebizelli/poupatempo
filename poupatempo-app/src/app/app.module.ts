@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms'
 
@@ -13,14 +13,18 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { registerLocaleData } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
-
+import localePt from '@angular/common/locales/pt';
 import { AppComponent } from './app.component';
+
+
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -34,9 +38,10 @@ import { AppComponent } from './app.component';
     MatIconModule,
     FormsModule,
     MatCheckboxModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

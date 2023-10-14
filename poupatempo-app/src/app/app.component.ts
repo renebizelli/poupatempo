@@ -1,32 +1,12 @@
 import { Component } from '@angular/core';
-import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  MatSnackBar
+} from '@angular/material/snack-bar';
+import { nubankModel, categoryModel, matchModel } from './models/models'
 
-type debtType = 'monthy' | 'random'
-
-
-interface nubankModel {
-  id: number;
-  date: Date;
-  description: string;
-  value: number;
-  category?: matchModel
-
-}
-
-interface matchModel extends item {
-  tag: string;
-}
-
-interface categoryModel extends item {
-  tags: string[];
-  amount: number;
-}
-
-interface item {
-  id: number;
-  name: string;
-}
+type checkExistTagReturns = { exists: boolean, name: string }
 
 const dateIndexNubankModel = 0;
 const descriptionIndexNubankModel = 2;
@@ -40,7 +20,9 @@ const valueIndexNubankModel = 3;
 export class AppComponent {
   title = 'poupatempo-app';
 
-panelOpenState = false
+  constructor(private _snackBar: MatSnackBar) { }
+
+  panelOpenState = false
 
 
   addOnBlurTags = true;
@@ -55,34 +37,34 @@ panelOpenState = false
       id: 1,
       name: 'Farmacia',
       tags: ['drogaria', 'drogasil'],
-      amount:0
+      amount: 0
     },
     {
       id: 2,
       name: 'Eventos',
       tags: ['Cinemarquise'],
-      amount:0
+      amount: 0
 
     },
     {
       id: 3,
       name: 'Uber',
       tags: ['Uber'],
-      amount:0
+      amount: 0
 
     },
     {
       id: 4,
       name: '99',
       tags: ['99'],
-      amount:0
+      amount: 0
     },
     {
       id: 5,
       name: 'Restaurante',
       tags: ['restaurante', 'Grill'],
-      amount:0
-    }, 
+      amount: 0
+    },
   ]
 
   matches: matchModel[] = [];
@@ -126,10 +108,10 @@ panelOpenState = false
     await this.createRecordSet(e.target.files[0]);
 
     this.compileMatches();
- 
+
     this.doMatches();
 
-    this.coumputeAmount();
+    this.computeAmount();
   }
 
   compileMatches() {
@@ -139,15 +121,15 @@ panelOpenState = false
 
   doMatches() {
     this.records
-    .map(m => { m.category = undefined; return m } )
-    .map(r => {
-      for (let i = 0; i < this.matches.length; i++) {
-        if (r.description.toLowerCase().indexOf(this.matches[i].tag.toLowerCase()) >= 0) {
-          r.category = this.matches[i];
-          break;
+      .map(m => { m.category = undefined; return m })
+      .map(r => {
+        for (let i = 0; i < this.matches.length; i++) {
+          if (r.description.toLowerCase().indexOf(this.matches[i].tag.toLowerCase()) >= 0) {
+            r.category = this.matches[i];
+            break;
+          }
         }
-      }
-    });
+      });
   }
 
   private async createRecordSet(file: File): Promise<void> {
@@ -176,38 +158,44 @@ panelOpenState = false
   }
 
   categoryChanged(eventual: categoryModel, record: nubankModel) {
+
     this.records.forEach(e => {
-      if (e.description == record.description && !e.category) {
+      if (e.description == record.description) {
         e.category = { id: eventual.id, name: eventual.name, tag: record.description };
       }
     });
 
-    eventual.tags.push(record.description);
-
-    this.compileMatches();
-
-    this.coumputeAmount();
+    this.computeAmount();
   }
 
   addTag(category: categoryModel, event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-    if (value) {
-      console.log("Add nova tag", event)
-      if (!category.tags.includes(value)) {
-        category.tags.push(value);
-      }
+
+    if (!value) return;
+
+    let exists = this.checkExistsTag(value);
+
+    if (exists.exists) {
+      this._snackBar.open('Esta tag já esta inserida na categoria ' + exists.name + '!', 'Atenção', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
+    else {
 
-    this.compileMatches();
+      category.tags.push(value);
 
-    this.doMatches();
+      this.compileMatches();
 
-    this.coumputeAmount();
+      this.doMatches();
+
+      this.computeAmount();
+    }
 
     event.chipInput!.clear();
   }
 
-  removeTag(category:categoryModel, tag: string): void {
+  removeTag(category: categoryModel, tag: string): void {
 
     const index = category.tags.indexOf(tag, 0);
     if (index > -1) {
@@ -216,15 +204,33 @@ panelOpenState = false
 
     this.compileMatches();
 
-    this.doMatches();
+    this.records.forEach(e => {
+      if (e.description.toLowerCase().indexOf(tag.toLowerCase()) >= 0 && e.category?.id == category.id) {
+        e.category = undefined;
+      }
+    });
 
-    this.coumputeAmount();
+    this.computeAmount();
   }
 
-  coumputeAmount() {
+  checkExistsTag(tag: string): checkExistTagReturns {
+
+    let result = { exists: false, name: '' };
+
+    let item = this.matches.find(f => f.tag == tag);
+
+    if (item) {
+      result.exists = true;
+      result.name = item.name;
+    }
+
+    return result;
+  }
+
+  computeAmount() {
     this.eventualModel.map(m => {
       m.amount = this.records.filter(f => f.category?.id == m.id)
-                    .reduce((sum, current) => sum + current.value, 0);
+        .reduce((sum, current) => sum + current.value, 0);
     });
 
   }

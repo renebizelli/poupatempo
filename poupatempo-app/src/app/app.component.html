@@ -1,36 +1,41 @@
 
-<div  style="display: flex;">
+<header>
+  <div  style="display: flex;">
     <input type="file" (change)="importCSVFile($event)" [accept]="'.csv'" />
-</div>
+  </div>
+</header>
 
 <main>
 
     <div id="items">
 
-        <p><mat-checkbox   (click)="showCategorizedToogle()">Mostrar apenas não categorizados</mat-checkbox></p>
 
-        <div *ngFor="let record of records">
-            <div class="row"  *ngIf="!showNonCategorized || !record.category">
-                <p>{{record.date | date:'dd/MM/yyyy'}}</p>
-                <p>{{record.description}}</p>
-                <p>{{record.value}}</p>
+      <div id="records" > 
 
-                <div>
-                    <button mat-button [matMenuTriggerFor]="menu">{{record?.category?.name || '-' }} </button>
-                    <mat-menu #menu="matMenu" class="category-bg">
-                        <button mat-menu-item *ngFor="let model of eventualModel" (click)="categoryChanged(model, record)"  [class.category-selected] = "record?.category?.id == model.id">{{model.name}}</button>
-                    </mat-menu>
-                </div>
-            </div>
-                
-        </div>
+        <ng-container *ngFor="let record of records">
+            
+              <div class="row"  *ngIf="!showNonCategorized || !record.category">
+                  <p class="date">{{record.date | date:'ccc d MMM'}}</p>
+                  <p class="description">{{record.description}}</p>
+                  <p class="value">{{record.value | currency: 'BRL' }}</p>
+
+                  <button mat-button [matMenuTriggerFor]="menu">{{record?.category?.name || '-' }} </button>
+                  <mat-menu #menu="matMenu" class="category-bg">
+                      <button mat-menu-item *ngFor="let model of eventualModel" (click)="categoryChanged(model, record)"  [class.category-selected] = "record?.category?.id == model.id">{{model.name}}</button>
+                  </mat-menu>
+              </div>
+                  
+          </ng-container>
+
+          </div>
+          <p><mat-checkbox   (click)="showCategorizedToogle()">Mostrar apenas não categorizados</mat-checkbox></p>
 
     </div>
 
     <div id="categories">
 
         <mat-accordion>
-            <mat-expansion-panel hideToggle>
+            <mat-expansion-panel hideToggle disabled>
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   Categorias
@@ -48,9 +53,10 @@
                     {{category.name}}
                 </mat-panel-title>
                 <mat-panel-description>
-                    {{category.amount}}
+                    {{category.amount | currency: 'BRL' }}
                 </mat-panel-description>
               </mat-expansion-panel-header>
+
               
               <mat-form-field class="tags-chip-list">
                 <mat-chip-grid #chipGrid>
@@ -68,6 +74,7 @@
                          (matChipInputTokenEnd)="addTag(category, $event)"/>
                 </mat-chip-grid>
               </mat-form-field>
+
 
             </mat-expansion-panel>
 
