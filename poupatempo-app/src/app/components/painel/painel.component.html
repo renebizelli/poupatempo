@@ -1,0 +1,90 @@
+<header>
+  <div style="display: flex;">
+    <input type="file" (change)="importCSVFile($event)" [accept]="'.csv'" />
+  </div>
+</header>
+
+<main>
+
+  <div id="items">
+
+    <div id="records">
+
+      <app-bills></app-bills>
+
+      <ng-container *ngFor="let record of records">
+
+        <div class="row" *ngIf="!showNonCategorized || !record.category">
+          <p class="date">{{record.date | date:'ccc d MMM'}}</p>
+          <p class="description">{{record.description}}</p>
+          <p class="value">{{record.value | currency: 'BRL' }}</p>
+
+          <button mat-button [matMenuTriggerFor]="menu">{{record?.category?.name || '-' }} </button>
+          <mat-menu #menu="matMenu" class="category-bg">
+            <button mat-menu-item *ngFor="let model of eventualModel" (click)="categoryChanged(model, record)"
+              [class.category-selected]="record?.category?.id == model.id">{{model.name}}</button>
+          </mat-menu>
+        </div>
+
+      </ng-container>
+
+    </div>
+    <p><mat-checkbox (click)="showCategorizedToogle()">Mostrar apenas não categorizados</mat-checkbox></p>
+
+  </div>
+
+  <div id="categories">
+
+    <mat-accordion>
+      <mat-expansion-panel hideToggle disabled>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Categorias
+          </mat-panel-title>
+          <mat-panel-description>
+            Total
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+        *ngFor="let category of eventualModel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{category.name}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{category.amount | currency: 'BRL' }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+
+        <mat-form-field class="tags-chip-list">
+          <mat-chip-grid #chipGrid>
+            <mat-chip-row *ngFor="let tag of category.tags" (removed)="removeTag(category, tag)" [editable]="false">
+              {{tag}}
+              <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+            <input [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlurTags" (matChipInputTokenEnd)="addTag(category, $event)" />
+          </mat-chip-grid>
+        </mat-form-field>
+
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+    <ul>
+      <li>
+        <div class="category-new-row">
+          <input type="text" placeholder="nova categoria" [(ngModel)]="newCategoryValue" />
+          <button (click)="newCategoryClicked()">salvar</button>
+        </div>
+      </li>
+    </ul>
+
+  </div>
+
+</main>

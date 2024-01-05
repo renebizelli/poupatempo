@@ -1,0 +1,13 @@
+{
+    "type": "service_account",
+    "projectId": "poupatempo-rene",
+    "privateKeyId": "019dcb64d4ab53d13a5bd48ff82d63532871cf23",
+    "privateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8SGytoQ7MbzaJ\nEE6XILyYxoLj0L/o0Dt40J7wOREpxO+BXcJUCUiPqccgb2V1mGgdsrjyrQIZQX4A\nGkPTWHLYWy/dgnjZf6lbFoMzRttvuHgJOGElUn7klKc9yI9ealdU94OyKj6am5KY\nieRkSG5D0UPgPwxk2hhYwAJJMqzcUKu6jZpk+Zpd2Pul+qIjNxqV5P80FBBi3Lxb\nwlu0fb5TiQmI7oTMhG0gxiAcIxAJvV2BzDqC0VHxJTyuCbO+/4EhbI+PZaoFGOHE\nqAhmnTWX0uMVxSNxpCWwG/5dWkt3tSOovltjkAzWqZyLD3hpW8S20ipFQ5ythWuP\nj9uGfX4JAgMBAAECggEAHoF0LPRBto50/TjJfaOjNZ7sNBxtYOY5dzYDRRP/Rjo5\n5/GYpmRT/7AtVYGsTvpLhuGfJPUyYtnWoA5MBkvNXQ/2gw2RplkQcnQE++OIyDgm\nKAWcz8mRn61qJLuAZyFprELncTrLpox68FYJzX8NcSrQXt6Nk9rg7k2Qe+rxpkbw\nWFmn3gA7mWQu9HPKHCkTEeJR42ujEyfxVnhvd3RzXVDJyxWwpGyQyq1cUnIHTYui\nW9eR4TDU1GNOXBHIUCtVoKppSb9jX5IWkXCCQupa6aJeXr5sjcU9DHplyS025wdP\nc2C7K9Puj5G+qVoh3mjRKgFc52j3JZmzHdesgnRrZQKBgQDwNXR/Gklb6lD3YIlj\nnB9F3/jU7dEIzJTpeLL3PwsBzOaUpnK4vVkU2wQCPWFwlTULWbSfZJ3zgKKvDD7N\nzR8t5/zUBPN+pE4gOPnjEVk8JnqZzWgzbYV5exGcdPC2W4nK0XyeXQTDJ0lah+jD\n+SitKXCVPlNlRub190XjTDXuLwKBgQDIqRfZAfTcR4uTldxjZFbUshBNZlzYw4qN\n5oNiLdiBgxpZZzm4YiPp+ZHC94Yu/u/poa1GWPxoSW8DyEiYN8DcAQ9giFkmMAQT\nkZGwJNTNggebzEDsaT0u6xQl+4fzPiRkW0Q/os9IWNMRjOZ7A1iLP7BAtuo1M4kC\nSpkSVbnBRwKBgQDoLLLSW6UGa6AgyzVgizmK/2Xy4X7HQ363f8tzwYKxFczVZ2DB\ngXsF9n+UbqGtAPsJYoZ7/fPRtccI7QwTPa1iYLX2dGaqRMOiz49w04bt5b9gw7Jw\n6u41MigeksVLbYTs/bi3FO+SdXmoQG9SZJTVcpV4G4rd/D8nBP+PKE2ETwKBgCBE\nqPQZz3GZA8YRBGbrXNdJZzu7KVUmZOKa3ifsrXNuTM9xvSN8jL/0hU8wFOD72ELe\n4Al/B+ARZwvZqmroFFiMxxdD9eohMJahAyerVJlTvrt8JjieV9tyrEPLZjpklN+a\nmagOG31L421gFjRT/mouLL7La3BwwCihLGp5ZKzDAoGBAK28BFo/Y2+XPWagMM2+\nC6ucbDBpQoAyewhjN+N/Yv6ZK2Yg2+EudJvZgWdTLDDosmYGENbwJhQo7jz0c7F/\npCW0iF/DKbZzbG7HLAlVtCr3awRoE+as7AqPtG7ksYPlLE9HrNkbH8C/yb94VrKL\nimUNVkCaHFmn+nWg+brBV7ZU\n-----END PRIVATE KEY-----\n",
+    "clientEmail": "firebase-adminsdk-wkm3z@poupatempo-rene.iam.gserviceaccount.com",
+    "clientId": "101073113583988899997",
+    "authUri": "https://accounts.google.com/o/oauth2/auth",
+    "tokenUri": "https://oauth2.googleapis.com/token",
+    "authProviderX509CertUrl": "https://www.googleapis.com/oauth2/v1/certs",
+    "clientC509CertUrl": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-wkm3z%40poupatempo-rene.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+}

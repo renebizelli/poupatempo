@@ -1,0 +1,24 @@
+#box-login {
+    padding: 10px;
+    background-color: #555;
+    width: 300px;
+    margin: 30px auto;
+    border-radius: 5px;
+
+    * {
+        display: block;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    button {
+        margin-bottom: 0;
+    }
+
+    p.error {
+        background-color: crimson;
+        color: antiquewhite;
+        padding: 10px;
+    }
+
+}
