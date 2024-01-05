@@ -1,0 +1,13 @@
+
+<div id="box-login">
+
+    <form [formGroup]="form" novalidate>
+
+        <p class="error" *ngIf="errorCode==1">Nubank não autenticou</p>
+        <p class="error" *ngIf="errorCode==2">Ocorreu algum erro</p>
+
+        <input type="text" placeholder="CPF" maxlength="11" class="form-control" formControlName="identifier" />
+        <input type="password" placeholder="Senha" class="form-control" formControlName="password" />
+        <button (click)="login()">Entrar</button>
+    </form>
+</div>
