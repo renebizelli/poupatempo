@@ -26,7 +26,6 @@ class nubankController
            let r = await this.nubankService.bills(access_token);
 
             res.json(r);
-
         }
         catch (error:any) {
             console.log(error)

@@ -20,3 +20,13 @@ export interface nubankModel {
     id: number;
     name: string;
   }
+
+  export interface bill {
+    state: string;
+    summary: billItem;
+}
+
+export interface billItem {
+    due_date: string;
+    total_balance: number;
+}

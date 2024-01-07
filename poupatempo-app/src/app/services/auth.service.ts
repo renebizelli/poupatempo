@@ -2,11 +2,12 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { LocalStorageService } from "./local-storage.service";
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
 
-    private base_url = 'http://localhost:5001/poupatempo-rene/us-central1/app/api/v1/public';
+    private access_token_key = 'ACCESS_TOKEN';
 
     constructor(
         private http: HttpClient,
@@ -15,10 +16,16 @@ export class AuthService {
     }
 
     login (identifier: string, password: string) : Observable<object>     {
-        return this.http.post(`${this.base_url}/login`, { identifier, password })
+        return this.http.post(`${environment.apiPublicUrl}/login`, { identifier, password })
     }
 
-    authenticated() {
-        return this.localStorage.has("ACCESS_TOKEN");
+    authenticated() : boolean {
+        return this.localStorage.has(this.access_token_key);
     }
+
+    GetToken() : string {
+        return this.localStorage.get(this.access_token_key) || '';
+    }
+
+
 }

@@ -1,13 +1,13 @@
-export class bills {
-    bills: bill[];
+export interface BillResponse {
+    bills: Bill[];
 }
 
-export class bill {
+export interface Bill {
     state: string;
-    summary: billItem;
+    summary: BillItem;
 }
 
-export class billItem {
-    due_date: string;
+export interface BillItem {
+    due_date: Date;
     total_balance: number;
 }
