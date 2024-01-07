@@ -2,17 +2,15 @@ import { firestore } from 'firebase-admin';
 
 class firestoreService {
 
-    async getCommomParamenter(key: string) : Promise<string>  {
+    async getCommomParamenter<T>(key: string) : Promise<T>  {
 
         return new Promise(async (resolve, reject) => {
 
             let paramenter = await firestore().collection('parameters').doc('COMMOM').get();
 
-            console.log("paramenter >>", paramenter.exists)
-            
             if(paramenter.exists && paramenter.data()[key]) 
             {
-                resolve(paramenter.data()[key]);
+                resolve(paramenter.data()[key] as T);
             }
             else
             {

@@ -1,0 +1,9 @@
+<ng-container *ngFor="let bill of bills">
+
+    <div class="row">
+      <p class="date">{{bill.summary.due_date | date:'yyyy MMM'}}</p>
+      <p class="value">{{bill.summary.total_balance | currency: 'BRL' }}</p>
+      <p class="status">{{bill.state }}</p>
+    </div>
+
+  </ng-container>

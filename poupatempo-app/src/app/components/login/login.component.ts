@@ -22,7 +22,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     private formGroup: FormBuilder,
     private localStorageService: LocalStorageService,
     private router: Router) {
-      super()
+    super()
   }
 
   ngOnInit(): void {
@@ -41,17 +41,17 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.errorCode = 0;
     this.router.navigate(['/painel']);
 
-//     this.authService.login(identifier, password)
-//       .subscribe({
-//         next: (result) => {
-//           this.localStorageService.set("ACCESS_TOKEN", result);
-// this.activatedRoute.navigate(['/painel']);
+    // this.authService.login(identifier, password)
+    //   .subscribe({
+    //     next: (result) => {
+    //       this.localStorageService.set("ACCESS_TOKEN", result);
+    //       this.router.navigate(['/painel']);
 
-//         },
-//         error: (e) => { 
-//           this.errorCode = e?.error?.code == 'ERR_BAD_REQUEST' ? 1 : 2;
-//         }
-//       })
+    //     },
+    //     error: (e) => {
+    //       this.errorCode = e?.error?.code == 'ERR_BAD_REQUEST' ? 1 : 2;
+    //     }
+    //   })
   }
 
 }
